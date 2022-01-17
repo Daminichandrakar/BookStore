@@ -5,20 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+@Entity
+@Table(name = "book_details")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Data
-@Table(name="Book")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String author;
-    private String title;
-    private String image;
-    private String price;
-    private String description;
+    private String bookAuthorName;
+    private String bookName;
+    private String bookImage;
+    private String bookPrice;
+    @Column(length = 15000)
+    private String bookDescription;
+    private String quantity;
+
 }

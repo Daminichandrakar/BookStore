@@ -6,11 +6,8 @@ import com.bridgelabz.bookstoreapplication.repository.BookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.util.stream.IntStream;
 
 @Service
 public class BookService {
@@ -20,50 +17,25 @@ public class BookService {
     private ModelMapper modelMapper;
     String line = "";
 
-    public void saveBookData(){
+    public String  saveBookData(){
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/books_data.csv"));
-            while ((line=bufferedReader.readLine()) != null){
-                  String [] data = line.split(",");
-                  Book book = new Book();
-//                  book.setId(Integer.valueOf(data[0]));
-                  book.setAuthor(data[1]);
-                  book.setTitle(data[2]);
-                book.setImage(data[3]);
-                book.setPrice(data[4]);
-                book.setDescription(data[5]);
-                System.out.println("books print"+book);
-                bookRepository.save(book);
+            BufferedReader bufferedReader = new BufferedReader(new
+                    FileReader("src/main/resources/books_data.csv"));
+            while ((line=bufferedReader.readLine()) != null) {
+                String[] data = line.split(",");
+                Book bookEntity = new Book();
+                bookEntity.setBookAuthorName(data[1].replaceAll("'", ""));
+                bookEntity.setBookName(data[2].replaceAll("'", ""));
+                bookEntity.setQuantity(data[3]);
+                bookEntity.setBookImage(data[4]);
+                bookEntity.setBookPrice(data[5]);
+                IntStream.range(7, data.length - 1).forEach(column -> data[6] += "," + data[column]);
+                bookEntity.setBookDescription(data[6]);
+                bookRepository.save(bookEntity);
             }
-        }catch (Exception e){
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return "Added";
     }
-
-
-
-
-
-
-
-
-
-
-
-//    public List<Book> getAllList(){
-//        return bookRepository.findAll();
-//    }
-//
-//    public String addBook(BookDto bookDto) {
-//        Book book = modelMapper.map(bookDto, Book.class);
-//        bookRepository.save(book);
-//        return "addBook";
-//    }
-//
-//    public Book getById(int id){
-//      return bookRepository.findById(id).get();
-//    }
-
-//    public List<Book> bookSearch(String name){
-//        return bookRepository.findAllByNameStartsWith(name);
-//    }
 }
