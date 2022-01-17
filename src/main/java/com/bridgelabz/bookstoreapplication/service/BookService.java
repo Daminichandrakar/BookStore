@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @Service
@@ -17,7 +18,7 @@ public class BookService {
     private ModelMapper modelMapper;
     String line = "";
 
-    public String  saveBookData(){
+    public String  loadCSV(){
         try {
             BufferedReader bufferedReader = new BufferedReader(new
                     FileReader("src/main/resources/books_data.csv"));
@@ -37,5 +38,15 @@ public class BookService {
             e.printStackTrace();
         }
         return "Added";
+    }
+
+    public List<Book> getAllBook() {
+      return bookRepository.findAll();
+    }
+
+    public String addBook(BookDto bookDto) {
+        Book book = modelMapper.map(bookDto,Book.class);
+        bookRepository.save(book);
+        return "Book Added Succesfully";
     }
 }

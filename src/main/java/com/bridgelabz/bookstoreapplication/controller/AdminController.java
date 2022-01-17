@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //@RequestMapping("/book")
 @RestController
 public class AdminController {
@@ -17,7 +19,18 @@ public class AdminController {
     private BookService bookService;
 
     @GetMapping("/book")
-    public String getAllBookList() {
-       return bookService.saveBookData();
+    public String loadCSV() {
+       return bookService.loadCSV();
+    }
+
+
+    @GetMapping("/booklist")
+    public List<Book> getAll() {
+        return bookService.getAllBook();
+    }
+
+    @PostMapping("/addbook")
+    public String add(@RequestBody BookDto bookDto) {
+        return bookService.addBook(bookDto);
     }
 }

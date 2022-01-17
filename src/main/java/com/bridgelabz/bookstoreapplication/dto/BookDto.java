@@ -6,7 +6,7 @@ import lombok.Data;
 public class BookDto {
 //    @NotNull(message = "Author name should not be empty")
 //    @Pattern(regexp = "^[A-Z][a-z]{2,}[ ][A-z][a-z]{2,}$", message = "Name is invalid")
-    private String bookAuthorName;
+            private String bookAuthorName;
 
 //    @NotNull(message = "Book name should not be empty")
     private String bookName;
